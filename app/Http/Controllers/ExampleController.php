@@ -11,7 +11,7 @@ class ExampleController extends Controller
          return view("homepage");
     }
     public function about() {    
-        return '<h1>About Page</h1><a href="/">Back to home</a>'; 
+       return view('single-post');
     
     }
     //
