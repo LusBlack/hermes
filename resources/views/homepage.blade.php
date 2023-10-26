@@ -38,6 +38,6 @@
 
 
 </x-layout>
-    @include('header')
+   
 
     
