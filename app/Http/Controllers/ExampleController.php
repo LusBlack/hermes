@@ -10,7 +10,7 @@ class ExampleController extends Controller
         //return '<h1>Homepage</h1><a href="/about">view the about page</a>';
          return view("homepage");
     }
-    public function about() {    
+    public function post() {    
        return view('single-post');
     
     }
