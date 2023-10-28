@@ -14,6 +14,8 @@ use App\Http\Controllers\ExampleController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', [ExampleController::class, "homepage"]);
-Route::get('/post', [ExampleController::class, "post"]); 
+Route::get('/', [UserController::class, "ShowCorrecthomepage"]);
+Route::get('/post', [ExampleController::class, "post"]);
 Route::post('/register', [UserController::class,'register']);
+Route::post('/login', [UserController::class,'login']);
+Route::post('/logout', [UserController::class, 'logout']);
