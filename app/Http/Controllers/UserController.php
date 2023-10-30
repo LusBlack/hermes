@@ -28,6 +28,7 @@ class UserController extends Controller
           'loginpassword' => 'required'
           ]);
 
+          //login method
           if (auth()->attempt(['username'=> $incomingFields['loginusername'],'password'=> $incomingFields['loginpassword']])) {
             $request->session()->regenerate();
             return redirect('/')->with('nice', "you're in.");
@@ -46,7 +47,9 @@ class UserController extends Controller
 
         ]);
         $incomingFields['password'] = bcrypt($incomingFields['password']);
-        User::create($incomingFields);
+       $user = User::create($incomingFields);
+       //we log the new user in instead of redirecting to home
+        auth()->login($user);
         return redirect('/')->with('success', 'Happy Hunting');
     }
 }
