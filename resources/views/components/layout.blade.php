@@ -9,6 +9,8 @@
     <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/main.css" />
   </head>
@@ -50,27 +52,36 @@
     </header>
     <!--header ends here-->
 
+
+
+
+
+
     @if(session()->has('nice'))
-     <div class="container container--narrow">
-        <div class="alert alert-success text-center">
+    <div x-data="{ showMessage: true }" x-show="showMessage" x-init="setTimeout(() => showMessage = false, 3000)">
+<div class="container container--narrow">
+        <div class="alert alert-success text-center" id="flash-message">
             {{session('nice')}}
         </div>
      </div>
-     @endif
+   @endif
 
-     @if(session()->has('failure'))
+
+ @if(session()->has('failure'))
      <div class="container container--narrow">
-        <div class="alert alert-danger text-center">
+        <div class="alert alert-danger text-center" id="dash">
             {{session('failure')}}
         </div>
      </div>
      @endif
 
+
+
     {{$slot}}
 
      <!-- footer begins -->
      <footer class="border-top text-center small text-muted py-3">
-        <p class="m-0">Copyright &copy; 2023 <a href="/" class="text-muted">Hermes</a>. All rights reserved.</p>
+        <p class="m-0">Copyright &copy; {{date('Y')}} <a href="/" class="text-muted">Hermes</a>. All rights reserved.</p>
       </footer>
 
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
