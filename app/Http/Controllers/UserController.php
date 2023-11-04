@@ -47,9 +47,9 @@ class UserController extends Controller
 
         ]);
         $incomingFields['password'] = bcrypt($incomingFields['password']);
-       $user = User::create($incomingFields);
+       $user = User::create($incomingFields) ;
        //we log the new user in instead of redirecting to home
         auth()->login($user);
-        return redirect('/')->with('success', 'Happy Hunting');
+        return redirect('/')->with('nice', 'Happy Hunting');
     }
 }
