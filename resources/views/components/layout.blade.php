@@ -59,10 +59,12 @@
 
 
     @if(session()->has('nice'))
-    <div x-data="{ showMessage: true }" x-show="showMessage" x-init="setTimeout(() => showMessage = false, 3000)">
-<div class="container container--narrow">
-        <div class="alert alert-success text-center" id="flash-message">
-            {{session('nice')}}
+    <div class="container container--narrow">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{session('nice')}}
+        <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
         </div>
      </div>
    @endif
@@ -70,8 +72,11 @@
 
  @if(session()->has('failure'))
      <div class="container container--narrow">
-        <div class="alert alert-danger text-center" id="dash">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
             {{session('failure')}}
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
      </div>
      @endif
