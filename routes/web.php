@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Route;
 */
 //User routes
 Route::get('/', [UserController::class, 'ShowCorrecthomepage']);
-//Route::get('/post', [ExampleController::class, "post"]);
 Route::post('/register', [UserController::class,'register']);
 Route::post('/login', [UserController::class,'login']);
 Route::post('/logout', [UserController::class, 'logout']);
@@ -25,4 +24,5 @@ Route::post('/logout', [UserController::class, 'logout']);
 //Blog post routes
 Route::get('/create-post', [PostController::class,'showCreatePost']);
 
-Route::post('create-post', [PostController::class, 'storeNewPOst']);
+Route::post('create-post', [PostController::class, 'storeNewPost']);
+Route::get('/post/{post}', [PostController::class,'viewSinglePost']);
