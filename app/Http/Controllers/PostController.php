@@ -26,7 +26,7 @@ class PostController extends Controller
 
       $newPost= Post::create($incomingFields);
 
-      return redirect("/post/{$newPost->id}")->with("success","New post created");
+      return redirect("/post/{$newPost->id}")->with("nice","New post created");
      }
 
 
