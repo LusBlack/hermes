@@ -16,13 +16,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 //User routes
-Route::get('/', [UserController::class, 'ShowCorrecthomepage']);
-Route::post('/register', [UserController::class,'register']);
-Route::post('/login', [UserController::class,'login']);
-Route::post('/logout', [UserController::class, 'logout']);
+Route::get('/', [UserController::class, 'ShowCorrecthomepage'])->name('login');
+Route::post('/register', [UserController::class,'register'])->middleware('guest');
+Route::post('/login', [UserController::class,'login'])->middleware('guest');
+Route::post('/logout', [UserController::class, 'logout'])->middleware('auth');
 
 //Blog post routes
-Route::get('/create-post', [PostController::class,'showCreatePost']);
+Route::get('/create-post', [PostController::class,'showCreatePost'])->middleware('mustBeLoggedIn');
 
-Route::post('create-post', [PostController::class, 'storeNewPost']);
+Route::post('create-post', [PostController::class, 'storeNewPost'])->middleware('mustBeLoggedIn');
 Route::get('/post/{post}', [PostController::class,'viewSinglePost']);
