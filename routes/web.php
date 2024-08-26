@@ -20,8 +20,8 @@ Route::get('/', [UserController::class, 'ShowCorrecthomepage'])->name('login');
 Route::post('/register', [UserController::class,'register'])->middleware('guest');
 Route::post('/login', [UserController::class,'login'])->middleware('guest');
 Route::post('/logout', [UserController::class, 'logout'])->middleware('auth');
-Route::get('/manage-avatar', [UserController::class, 'showAvatarForm'])->middleware('can:update, post');
-Route::get('/manage-avatar', [UserController::class, 'storeAvatar'])->middleware('can:update, post');
+Route::get('/manage-avatar', [UserController::class, 'showAvatarForm'])->middleware('mustBeLoggedIn');
+Route::post('/manage-avatar', [UserController::class, 'storeAvatar'])->middleware('mustBeLoggedIn');
 
 //Blog post routes
 Route::get('/create-post', [PostController::class,'showCreatePost'])->middleware('mustBeLoggedIn');
