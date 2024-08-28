@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Laravel\Facades\Image;
+
+
 
 class UserController extends Controller
 {
@@ -13,7 +17,15 @@ class UserController extends Controller
         'avatar' => 'required|image|max:3000'
        ]);
 
-       $request->file('avatar')->store('public/avatars');
+       $user = auth()->user();
+
+       $filename = $user->id . '_' . uniqid() . '.jpg';
+
+       $imgData = Image::make($request->file('avatar')->fit(120)->encode('jpg'));
+       Storage::put('public/avatars/' . $filename, $imgData);
+
+       $user->avatar = $filename;
+       $user->save();
     }
 
     public function showAvatarForm() {
