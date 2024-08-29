@@ -6,7 +6,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Encoders\JpegEncoder;
 use Intervention\Image\Laravel\Facades\Image;
+
+
+
 
 
 
@@ -21,10 +25,15 @@ class UserController extends Controller
 
        $filename = $user->id . '_' . uniqid() . '.jpg';
 
-       $imgData = Image::make($request->file('avatar')->fit(120)->encode('jpg'));
-       Storage::put('public/avatars/' . $filename, $imgData);
+     $imgData = Image::read($request->file('avatar'));
+     $imgData->resize(120,120);
+     $jpegEncoder = new JpegEncoder();
+     $encodedImage = $imgData->encode($jpegEncoder);
 
-       $user->avatar = $filename;
+     $user->avatar = $filename;
+     Storage::put('public/avatars/' . $filename, (string) $encodedImage);
+
+
        $user->save();
     }
 
