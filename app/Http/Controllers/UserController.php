@@ -10,10 +10,6 @@ use Intervention\Image\Encoders\JpegEncoder;
 use Intervention\Image\Laravel\Facades\Image;
 
 
-
-
-
-
 class UserController extends Controller
 {
     public function storeAvatar(Request $request) {
@@ -30,7 +26,7 @@ class UserController extends Controller
      $jpegEncoder = new JpegEncoder();
      $encodedImage = $imgData->encode($jpegEncoder);
 
-     $user->avatar = $filename;
+
      Storage::put('public/avatars/' . $filename, (string) $encodedImage);
 
 
