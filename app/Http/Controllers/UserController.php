@@ -29,8 +29,18 @@ class UserController extends Controller
 
      Storage::put('public/avatars/' . $filename, (string) $encodedImage);
 
+     $oldAvatar = $user->avatar;
 
-       $user->save();
+
+     $user->avatar = $filename;
+     $user->save();
+
+     if($oldAvatar != "/fallback-avatar.jpg") {
+        Storage::delete(str_replace("/storage/", "public/", $oldAvatar));
+     }
+
+     return back()->with('success', 'Congrats, avatar changed');
+
     }
 
     public function showAvatarForm() {
@@ -40,7 +50,8 @@ class UserController extends Controller
     public function profile(User $user) {
 
         return view('profile-post',
-        ['username' => $user->username,
+        [ 'avatar' => $user->avatar,
+         'username' => $user->username,
          'posts' => $user->posts()->latest()->get(),
          'postCount' => $user->posts()->count()
     ]);
