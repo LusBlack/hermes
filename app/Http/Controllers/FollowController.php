@@ -10,12 +10,16 @@ class FollowController extends Controller
 {
     public function createFollow(User $user) {
         // you cannot follow yourself
+        if($user->id == auth()->user()->id) {
+            return back()->with('failure', 'You cannot follow yourself');
+        }
 
         // cannot follow someone you're already following
+        $existCheck =Follow::where([])->count();
 
         $newFollow = new Follow;
         $newFollow->user_id = auth()->user()->id;
-        $newFollow->followedid = $user->id;
+        $newFollow->followeduser = $user->id;
         $newFollow->save();
 
     }
