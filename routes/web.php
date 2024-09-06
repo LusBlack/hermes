@@ -31,6 +31,11 @@ Route::delete('/post/{post}', [PostController::class, 'delete'])->middleware('ca
 Route::get('/post/{post}/edit', [PostController::class, 'showEditForm'])->middleware('can:update, post');
 Route::put('/post/{post}', [PostController::class, 'actuallyUpdate'])->middleware('can:update, post');
 
+//follow related routes
+Route::post('/create-follow/{user:username}', [FollowController::class, 'follow'])->middleware('mustBeLoggedIn');
+Route::post('/remove-follow/{user:username}', [FollowController::class, 'remove'])->middleware('mustBeLoggedIn');
+
+
 //profile related routes
 Route::get('/profile/{user:username}', [UserController::class, 'profile']);
 
