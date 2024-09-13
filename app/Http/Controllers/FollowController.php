@@ -24,6 +24,7 @@ class FollowController extends Controller
         $newFollow->user_id = auth()->user()->id;
         $newFollow->followeduser = $user->id;
         $newFollow->save();
+        return back()->with('success', 'user successfully followed');
 
     }
 
