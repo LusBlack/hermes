@@ -60,7 +60,9 @@ class UserController extends Controller
         View::share('sharedData', ['currentlyFollowing' => $currentlyFollowing,
         'avatar' => $user->avatar,
          'username' => $user->username,
-         'postCount' => $user->posts()->count()]);
+         'postCount' => $user->posts()->count(),
+         'followerCount' => $user->followers()->count(),
+         'followingCount' => $user->following()->count()]);
     }
 
     public function profileFollowing(User $user) {
