@@ -88,9 +88,11 @@ class UserController extends Controller
         auth()->logout();
         return redirect('/')->with('nice', "piss-off");
      }
+
+
     public function showCorrectHomePage() {
         if (auth()->check()) {
-            return view('homepage-feed');
+            return view('homepage-feed', ['posts'=> auth()->user()->feedPosts()->latest()->get()]);
         } else {
             return view('homepage');
         }
