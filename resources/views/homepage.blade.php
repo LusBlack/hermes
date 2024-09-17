@@ -7,7 +7,8 @@
       </div>
       <div class="col-lg-5 pl-lg-5 pb-3 py-lg-5">
         <form action="/register" method="POST" id="registration-form">
-          @csrf 
+          @csrf
+
           <div class="form-group">
             <label for="username-register" class="text-muted mb-1"><small>Username</small></label>
             <input value="{{old('username')}}" name="username" id="username-register" class="form-control" type="text" placeholder="Pick a username" autocomplete="off" />
@@ -51,6 +52,5 @@
 
 
 </x-layout>
-   
 
-    
+

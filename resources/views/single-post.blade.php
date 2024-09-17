@@ -4,7 +4,7 @@
         <div class="d-flex justify-content-between">
           <h2>{{$post->title}}</h2>
 
-          @can('update', $post)
+          @can('update',  $post)
           <span class="pt-2">
             <a href="/post/{{$post->id}}/edit" class="text-primary mr-2" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></a>
             <form class="delete-post-form d-inline" action="/post/{{$post->id}}" method="POST">

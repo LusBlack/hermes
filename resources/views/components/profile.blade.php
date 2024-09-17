@@ -19,6 +19,7 @@
         @endif
         @if(auth()->user()->username == $sharedData['username'])
           <a href="/manage-avatar" class="btn btn-secondary btn-sm">Manage avatar</a>
+          <a href="/change-username" class="btn btn-secondary btn-sm">change username</a>
         @endauth
 
       </h2>

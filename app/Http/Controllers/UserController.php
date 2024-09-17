@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Follow;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Encoders\JpegEncoder;
@@ -45,10 +46,34 @@ class UserController extends Controller
 
     }
 
+
+
     //view for changing avatar
     public function showAvatarForm() {
         return view('avatar-form');
     }
+
+    public function changeUsername(Request $request) {
+      $request->validate(['username' => ['required','min:3',
+        'max:20', Rule::unique('users', 'username')]]);
+     $user= Auth::user();
+     if($user->username !== $request->username) {
+        $user->username = $request->username;
+
+        if($user->save()) {
+            return redirect("/profile/{$user->username}")->with('success', 'username changed');
+        }
+     }
+     return redirect()->back()->with('error', 'failed to update username');
+
+    }
+
+
+    public function ShowChangeUsername() {
+        $user= Auth::user();
+        return view('changeUsername', ['user' => $user]);
+    }
+
 
     private function getSharedData($user) {
         $currentlyFollowing = 0;
@@ -92,7 +117,7 @@ class UserController extends Controller
 
     public function showCorrectHomePage() {
         if (auth()->check()) {
-            return view('homepage-feed', ['posts'=> auth()->user()->feedPosts()->latest()->get()]);
+            return view('homepage-feed', ['posts'=> auth()->user()->feedPosts()->latest()->paginate(4)]);
         } else {
             return view('homepage');
         }

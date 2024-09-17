@@ -9,12 +9,17 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     public function actuallyUpdate(Post $post, Request $request) {
+
         $incomingFields = $request->validate([
             'title' => 'required',
             'body' => 'required'
         ]);
         $incomingFields['title'] = strip_tags($incomingFields['title']);
         $incomingFields['body'] = strip_tags($incomingFields['body']);
+
+        if( auth()->user()->cannot('update', $post)) {
+            return back()->with('failure', 'You cannot update this post');
+        }
 
         $post->update($incomingFields);
 
@@ -27,7 +32,7 @@ class PostController extends Controller
 
     public function delete(Post $post) {
        if( auth()->user()->cannot('delete', $post)) {
-        return 'You cannot do that';
+        return redirect('/profile/' . auth()->user()->username)->with('failure', 'You cannot delete this post');
        }
        $post->delete();
 

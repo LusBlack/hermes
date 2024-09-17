@@ -22,18 +22,16 @@ Route::post('/login', [UserController::class,'login'])->middleware('guest');
 Route::post('/logout', [UserController::class, 'logout'])->middleware('auth');
 Route::get('/manage-avatar', [UserController::class, 'showAvatarForm'])->middleware('mustBeLoggedIn');
 Route::post('/manage-avatar', [UserController::class, 'storeAvatar'])->middleware('mustBeLoggedIn');
+Route::get('/change-username', [UserController::class, 'ShowchangeUsername'])->middleware('mustBeLoggedIn');
+Route::put('/change-username', [UserController::class, 'changeUsername'])->middleware('mustBeLoggedIn');
 
 //Blog post routes
 Route::get('/create-post', [PostController::class,'showCreatePost'])->middleware('mustBeLoggedIn');
 Route::post('create-post', [PostController::class, 'storeNewPost'])->middleware('mustBeLoggedIn');
 Route::get('/post/{post}', [PostController::class,'viewSinglePost']);
-Route::delete('/post/{post}', [PostController::class, 'delete'])->middleware('can:delete, post');
-Route::get('/post/{post}/edit', [PostController::class, 'showEditForm'])->middleware('can:update, post');
-Route::put('/post/{post}', [PostController::class, 'actuallyUpdate'])->middleware('can:update, post');
-
-//follow related routes
-Route::post('/create-follow/{user:username}', [FollowController::class, 'follow'])->middleware('mustBeLoggedIn');
-Route::post('/remove-follow/{user:username}', [FollowController::class, 'remove'])->middleware('mustBeLoggedIn');
+Route::delete('/post/{post}', [PostController::class, 'delete']);
+Route::get('/post/{post}/edit', [PostController::class, 'showEditForm']);
+Route::put('/post/{post}', [PostController::class, 'actuallyUpdate']);
 
 
 //profile related routes
