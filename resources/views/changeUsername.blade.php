@@ -1,6 +1,6 @@
 <x-layout>
     <div class="container py-md-5 container--narrow">
-        <form action="/change-username/{{$user->username}}" method="POST">
+        <form action="/change-username" method="POST">
           @csrf
           @method('PUT')
           <div class="form-group">
