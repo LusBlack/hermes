@@ -62,11 +62,15 @@ class UserController extends Controller
 
         if($user->save()) {
             return redirect("/profile/{$user->username}")->with('success', 'username changed');
+        } else {
+            //diagnosing for save failure
+            \Log::error('Failed to update username for user ID: ' . $user->id);
         }
-     }
-     return redirect()->back()->with('error', 'failed to update username');
-
+    } else {
+        return redirect()->back()->with('error', 'New username is the same as the current one.');
     }
+     return redirect()->back()->with('error', 'failed to update username');
+}
 
 
     public function ShowChangeUsername() {
