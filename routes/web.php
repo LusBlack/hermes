@@ -16,6 +16,7 @@ use App\Http\Controllers\FollowController;
 |
 */
 //User routes
+
 Route::get('/', [UserController::class, 'ShowCorrecthomepage'])->name('login');
 Route::post('/register', [UserController::class,'register'])->middleware('guest');
 Route::post('/login', [UserController::class,'login'])->middleware('guest');

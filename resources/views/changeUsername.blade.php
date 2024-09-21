@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout doctitle="Change your username">
     <div class="container py-md-5 container--narrow">
         <form action="/change-username" method="POST">
           @csrf
