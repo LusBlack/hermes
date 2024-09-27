@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
@@ -10,10 +11,11 @@ class PostController extends Controller
 {
 
     public function search($term) {
-        $posts = Post::Search($term)->get();
+       $posts = Post::Search($term)->get();
         $posts->load('user:id,username,avatar');
             return $posts;
-    }
+        }
+
 
     public function actuallyUpdate(Post $post, Request $request) {
 
