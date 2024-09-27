@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ExampleEvent;
 use App\Models\User;
 use App\Models\Follow;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ use Intervention\Image\Laravel\Facades\Image;
 
 class UserController extends Controller
 {
+
     public function storeAvatar(Request $request) {
        $request->validate([
         'avatar' => 'required|image|max:3000'
@@ -86,12 +88,14 @@ class UserController extends Controller
             $currentlyFollowing = Follow::where(([['user_id', '=', auth()->user()->id], ['followeduser', '=', $user->id]]))->count();
         }
 
-        View::share('sharedData', ['currentlyFollowing' => $currentlyFollowing,
+        View::share('sharedData', [
+        'currentlyFollowing' => $currentlyFollowing,
         'avatar' => $user->avatar,
          'username' => $user->username,
          'postCount' => $user->posts()->count(),
          'followerCount' => $user->followers()->count(),
-         'followingCount' => $user->following()->count()]);
+         'followingCount' => $user->following()->count()
+        ]);
     }
 
     public function profileFollowing(User $user) {
@@ -114,6 +118,7 @@ class UserController extends Controller
     }
 
     public function logout() {
+        event(New ExampleEvent(['username' => auth()->user()->username, 'action' => 'logout']));
         auth()->logout();
         return redirect('/')->with('nice', "piss-off");
      }
@@ -137,6 +142,7 @@ class UserController extends Controller
 
           if (auth()->attempt(['username'=> $incomingFields['loginusername'],'password'=> $incomingFields['loginpassword']])) {
             $request->session()->regenerate();
+            event(new ExampleEvent(['username' => auth()->user()->username, 'action' => 'login']));
             return redirect('/')->with('nice', "you're in.");
 
           } else {
