@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Encoders\JpegEncoder;
 use Intervention\Image\Laravel\Facades\Image;
+use Response;
 
 
 class UserController extends Controller
@@ -110,11 +111,21 @@ class UserController extends Controller
         [ 'followers' => $user->followers()->latest()->get()]);
     }
 
-    //user's profile
-    public function profile(User $user) {
+     public function profile(User $user) {
         $this->getSharedData($user);
         return view('profile-post',
         ['posts' => $user->posts()->latest()->get()]);
+    }
+
+    public function profileFollowingRaw(User $user)  {
+         return Response()->json(['theHTML' => view('profile-following-only', ['following'=>$user->following()->latest()->get()])->render(), 'docTitle'=> $user->username . "follows these users"]);
+    }
+
+    public function profileFollowersRaw(User $user) {
+       return Response()->json(['theHTML' => view('profile-followers-only', ['followers'=>$user->followers()->latest()->get()])->render(), 'docTitle'=> $user->username . "'s followers"]);
+    }
+    public function profileRaw(User $user) {
+        return Response()->json(['theHTML' => view('profile-posts-only', ['posts'=>$user->posts()->latest()->get()])->render(), 'docTitle'=> $user->username]);
     }
 
     public function logout() {
