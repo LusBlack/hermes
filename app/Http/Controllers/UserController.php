@@ -118,18 +118,17 @@ class UserController extends Controller
     }
 
     public function profileFollowingRaw(User $user)  {
-         return Response()->json(['theHTML' => view('profile-following-only', ['following'=>$user->following()->latest()->get()])->render(), 'docTitle'=> $user->username . "follows these users"]);
+         return response()->json(['theHTML' => view('profile-following-only', ['following'=>$user->following()->latest()->get()])->render(), 'docTitle'=> $user->username . "follows these users"]);
     }
 
     public function profileFollowersRaw(User $user) {
-       return Response()->json(['theHTML' => view('profile-followers-only', ['followers'=>$user->followers()->latest()->get()])->render(), 'docTitle'=> $user->username . "'s followers"]);
+       return response()->json(['theHTML' => view('profile-followers-only', ['followers'=>$user->followers()->latest()->get()])->render(), 'docTitle'=> $user->username . "'s followers"]);
     }
     public function profileRaw(User $user) {
-        return Response()->json(['theHTML' => view('profile-posts-only', ['posts'=>$user->posts()->latest()->get()])->render(), 'docTitle'=> $user->username]);
+        return response()->json(['theHTML' => view('profile-posts-only', ['posts'=>$user->posts()->latest()->get()])->render(), 'docTitle'=> $user->username]);
     }
 
     public function logout() {
-        event(New ExampleEvent(['username' => auth()->user()->username, 'action' => 'logout']));
         auth()->logout();
         return redirect('/')->with('nice', "piss-off");
      }
@@ -153,7 +152,6 @@ class UserController extends Controller
 
           if (auth()->attempt(['username'=> $incomingFields['loginusername'],'password'=> $incomingFields['loginpassword']])) {
             $request->session()->regenerate();
-            event(new ExampleEvent(['username' => auth()->user()->username, 'action' => 'login']));
             return redirect('/')->with('nice', "you're in.");
 
           } else {
