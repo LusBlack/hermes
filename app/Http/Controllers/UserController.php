@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\ExampleEvent;
+use Response;
+use App\Models\Post;
 use App\Models\User;
 use App\Models\Follow;
+use App\Events\ExampleEvent;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Encoders\JpegEncoder;
 use Intervention\Image\Laravel\Facades\Image;
-use Response;
+
 
 
 class UserController extends Controller
@@ -138,9 +141,25 @@ class UserController extends Controller
         if (auth()->check()) {
             return view('homepage-feed', ['posts'=> auth()->user()->feedPosts()->latest()->paginate(4)]);
         } else {
-            return view('homepage');
+            $postCount = Cache::remember('postCount', 20, function(){
+                return Post::count();
+            });
+            return view('homepage', ['postCount'=> $postCount]);
         }
 
+    }
+
+    public function loginAPI(Request $request) {
+        $incomingFields = $request->validate([
+            'username' => 'required',
+            'password' => 'required'
+            ]);
+
+            if(auth()->attempt($incomingFields)) {
+                $user = User::where('username', $incomingFields['username'])->first();
+                $token =$user->createToken('HermesToken')->plainTextToken;
+                return $token;
+            }
     }
 
     //login method
@@ -149,6 +168,7 @@ class UserController extends Controller
           'loginusername' => 'required',
           'loginpassword' => 'required'
           ]);
+
 
           if (auth()->attempt(['username'=> $incomingFields['loginusername'],'password'=> $incomingFields['loginpassword']])) {
             $request->session()->regenerate();

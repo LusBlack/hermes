@@ -43,13 +43,15 @@ class PostController extends Controller
     }
 
     public function delete(Post $post) {
-       if( auth()->user()->cannot('delete', $post)) {
-        return redirect('/profile/' . auth()->user()->username)->with('failure', 'You cannot delete this post');
-       }
-       $post->delete();
-
-       return redirect('/profile/' . auth()->user()->username)->with('success', 'Post successfully deleted');
+        $post->delete();
+        return redirect('/profile/' . auth()->user()->username)->with('success', 'Post successfully deleted.');
     }
+
+    public function deletePostAPI(Post $post) {
+        $post->delete();
+        return 'true';
+     }
+
 
 
     public function viewSinglePost(Post $post) {
@@ -73,6 +75,24 @@ class PostController extends Controller
         dispatch(new sendNewPostEmail(['sendTo'=>auth()->user()->email, 'name' => auth()->user()->username, 'title'=>$newPost->title]));
 
         return redirect("/post/{$newPost->id}")->with("nice","New post created");
+    }
+
+    public function storePostAPI(Request $request){
+        $incomingFields = $request->validate([
+            'title'=> 'required',
+            'body'=> 'required'
+        ]);
+        //sanitizing user input
+        $incomingFields['title'] = strip_tags($incomingFields['title']);
+        $incomingFields['body'] = strip_tags($incomingFields['body']);
+        $incomingFields['user_id'] = auth()->user()->id;
+
+
+        $newPost= Post::create($incomingFields);
+
+        dispatch(new sendNewPostEmail(['sendTo'=>auth()->user()->email, 'name' => auth()->user()->username, 'title'=>$newPost->title]));
+
+        return $newPost->id;
     }
 
     public function showCreatePost() {

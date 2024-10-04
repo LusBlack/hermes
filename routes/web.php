@@ -32,7 +32,7 @@ Route::put('/change-username', [UserController::class, 'changeUsername'])->middl
 Route::get('/create-post', [PostController::class,'showCreatePost'])->middleware('mustBeLoggedIn');
 Route::post('create-post', [PostController::class, 'storeNewPost'])->middleware('mustBeLoggedIn');
 Route::get('/post/{post}', [PostController::class,'viewSinglePost']);
-Route::delete('/post/{post}', [PostController::class, 'delete']);
+Route::delete('/post/{post}', [PostController::class, 'delete'])->middleware('can:delete,post');
 Route::get('/post/{post}/edit', [PostController::class, 'showEditForm']);
 Route::put('/post/{post}', [PostController::class, 'actuallyUpdate']);
 Route::get('/search/{term}', [PostController::class, 'search']);

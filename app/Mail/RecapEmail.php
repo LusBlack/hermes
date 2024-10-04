@@ -2,25 +2,25 @@
 
 namespace App\Mail;
 
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class NewPostEmail extends Mailable
+class RecapEmail extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $data;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($data)
+    public function __construct()
     {
-        $this->data = $data;
+        //
     }
 
     /**
@@ -29,7 +29,7 @@ class NewPostEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Wagwan!',
+            subject: 'Site Recap',
         );
     }
 
@@ -38,9 +38,12 @@ class NewPostEmail extends Mailable
      */
     public function content(): Content
     {
+        $postCount = Post::count();
+        $userCount = User::count();
+
         return new Content(
-            view: 'new-post-email',
-            with: ['title'=> $this->data['title'], 'name'=>$this->data['name']]
+            view: 'recapemail',
+            with: ['userCount'=>$userCount, 'postCount'=>$postCount]
         );
     }
 
